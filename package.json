@@ -1,0 +1,50 @@
+{
+  "name": "kintone_customize_master",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "webpack_dev": "webpack --config webpack.dev.js",
+    "webpack_prod": "webpack --config webpack.prod.js",
+    "uploader": "cd ./dist && kintone-customize-uploader --watch customize-manifest.json"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/yanoshi-1009/kintone_customize_master.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": [
+    "last 1 ie version",
+    "last 1 Edge version",
+    "last 1 Chrome version",
+    "last 1 Firefox version",
+    "last 1 safari version",
+    "last 3 iOS versions",
+    "last 1 ChromeAndroid version"
+  ],
+  "description": "",
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/polyfill": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@cybozu/eslint-config": "^3.2.1",
+    "@kintone/create-plugin": "^1.4.4",
+    "@kintone/customize-uploader": "^1.5.3",
+    "@kintone/webpack-plugin-kintone-plugin": "^1.0.12",
+    "babel-loader": "^8.0.6",
+    "eslint": "^5.16.0",
+    "eslint-loader": "^2.2.1",
+    "prettier": "^1.18.2",
+    "typescript": "^3.6.3",
+    "webpack": "^4.40.2",
+    "webpack-bundle-analyzer": "^3.5.1",
+    "webpack-cli": "^3.3.9",
+    "webpack-merge": "^4.2.2",
+    "webpack-stream": "^5.2.1"
+  },
+  "dependencies": {
+    "@kintone/kintone-js-sdk": "^0.4.0"
+  }
+}
