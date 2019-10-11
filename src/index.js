@@ -1,25 +1,23 @@
+const OAuth = require("oauthio-web");
 jQuery.noConflict();
 (function($) {
   "use strict";
 
-  const checkEventMenu = eventMenu => {
-    if (eventMenu === "打合") {
-      return true;
-    }
-    return false;
-  };
+  const OauthioAppName = "box";
+  const OauthPublicKey = "CUD0SaOqvV9OuCNnznpCB6OOi5I";
+  const boxFileId = "526904357462";
+  const targetEvent = ["打合"];
 
   async function getAccessToken() {
-    OAuth.initialize("CUD0SaOqvV9OuCNnznpCB6OOi5I");
-    const authResult = await OAuth.popup("box", { cache: true });
+    OAuth.initialize(OauthPublicKey);
+    const authResult = await OAuth.popup(OauthioAppName, { cache: true });
     return authResult.access_token;
   }
 
   async function copyNote(accessToken) {
     const proxyCode = "copyNote"; // Garoonで定義
     const noteName = garoon.schedule.event.get().subject;
-    const fileId = "526904357462";
-    const url = `https://api.box.com/2.0/files/${fileId}/copy`;
+    const url = `https://api.box.com/2.0/files/${boxFileId}/copy`;
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/json"
@@ -65,6 +63,9 @@ jQuery.noConflict();
 
   async function createNote() {
     const accessToken = await getAccessToken();
+    if (accessToken == null) {
+      return;
+    }
     const resultOfCopy = await copyNote(accessToken);
     const fileId = JSON.parse(resultOfCopy[0]).id;
     const resultOfCreateLink = await createSharedLink(fileId, accessToken);
@@ -94,8 +95,14 @@ jQuery.noConflict();
   garoon.events.on("schedule.event.detail.show", event => {
     const eventMenu = event.event.eventMenu;
     const boxSharedUrl = event.event.additionalItems.item.value;
-    const isTargetEvent = checkEventMenu(eventMenu);
-    if (isTargetEvent && boxSharedUrl === "") {
+
+    // 連携対象の予定メニューでなければ処理終了
+    if (!targetEvent.includes(eventMenu)) {
+      return;
+    }
+
+    // boxの連携URLの存在確認
+    if (boxSharedUrl === "") {
       showCreateBotton();
     } else {
       showExistedNote(boxSharedUrl);
