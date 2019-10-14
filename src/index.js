@@ -189,9 +189,14 @@ jQuery.noConflict();
   garoon.events.on("schedule.event.detail.show", event => {
     const boxSharedUrl = event.event.additionalItems.item.value;
 
-    // 連携対象の予定メニューに表示されるhtml要素がなければ対象外として処理終了
-    // Todo 繰り返し予定削除
-    if (!$("#box-content")) {
+    // 繰り返し予定の場合対象外として処理終了
+    if (event.event.eventType === "REPEATING") {
+      return;
+    }
+
+    if ($("#box-content").length !== 1) {
+      // 連携対象の予定メニューに表示されるhtml要素がなければ対象外として処理終了
+      alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
 
