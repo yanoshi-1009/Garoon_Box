@@ -156,7 +156,7 @@ jQuery.noConflict();
    * box noteの作成ボタンを表示する関数
    */
   const showCreateBotton = () => {
-    if (!$("#create-note-button")) {
+    if ($("#create-note-button") !== 1) {
       alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
