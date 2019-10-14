@@ -25,7 +25,9 @@ jQuery.noConflict();
     FAIL_EXEC_PROCY_API:
       "プロキシAPIの実行に失敗しました。\nプロキシAPI設定を確認してください。",
     FAIL_GET_ELEMENTS:
-      "連携用HTML要素の取得に失敗しました。\n予定の連携メニューの設定を確認してください。"
+      "連携用HTML要素の取得に失敗しました。\n予定の連携メニューの設定を確認してください。",
+    FAIL_COPY_BOXNOTE: "boxnoteの作成に失敗しました。",
+    FAIL_CREATE_SHARED_LINK: "共有リンクの作成に失敗しました。"
   };
 
   /**
@@ -127,7 +129,7 @@ jQuery.noConflict();
     // box note作成の実行結果確認
     if (resultOfCopy[1] !== 201) {
       alert(
-        `status:${detailOfCopyNote.status}\nmessage:${detailOfCopyNote.code}`
+        `${ERROR_MESSAGE.FAIL_COPY_BOXNOTE}\nstatus:${detailOfCopyNote.status}\nmessage:${detailOfCopyNote.code}`
       );
       return;
     }
@@ -144,7 +146,7 @@ jQuery.noConflict();
     // 共有リンク作成の実行結果確認
     if (resultOfCreateLink[1] !== 200) {
       alert(
-        `status:${detailOfCreateLink.status}\nmessage:${detailOfCreateLink.code}`
+        `${ERROR_MESSAGE.FAIL_CREATE_SHARED_LINK}\nstatus:${detailOfCreateLink.status}\nmessage:${detailOfCreateLink.code}`
       );
       return;
     }
@@ -156,7 +158,7 @@ jQuery.noConflict();
    * box noteの作成ボタンを表示する関数
    */
   const showCreateBotton = () => {
-    if ($("#create-note-button") !== 1) {
+    if ($("#create-note-button").length !== 1) {
       alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
@@ -174,7 +176,7 @@ jQuery.noConflict();
     const embeddedUrl = `https://app.box.com/embed/s/${sharedLinkCode}?showParentPath=false`;
     const $linkNoteButton = $("#link-note-button");
     const $embeddedBoxNote = $("#embedded-box-note");
-    if ($linkNoteButton.length !== 1 || !$embeddedBoxNote.length !== 1) {
+    if ($linkNoteButton.length !== 1 || $embeddedBoxNote.length !== 1) {
       alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
