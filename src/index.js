@@ -174,7 +174,7 @@ jQuery.noConflict();
     const embeddedUrl = `https://app.box.com/embed/s/${sharedLinkCode}?showParentPath=false`;
     const $linkNoteButton = $("#link-note-button");
     const $embeddedBoxNote = $("#embedded-box-note");
-    if (!$linkNoteButton || !$embeddedBoxNote) {
+    if ($linkNoteButton.length !== 1 || !$embeddedBoxNote.length !== 1) {
       alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
@@ -194,8 +194,8 @@ jQuery.noConflict();
       return;
     }
 
+    // 連携対象の予定メニューに表示されるhtml要素がなければ対象外として処理終了
     if ($("#box-content").length !== 1) {
-      // 連携対象の予定メニューに表示されるhtml要素がなければ対象外として処理終了
       alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
