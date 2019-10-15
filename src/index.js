@@ -5,9 +5,9 @@ jQuery.noConflict();
   // oauth.ioで定義
   const OAUTHIO_APP_NAME = "box";
   // oauth.ioで取得
-  const OAUTHIO_PUBLIC_KEY = "CUD0SaOqvV9OuCNnznpCB6OOi5I";
+  const OAUTHIO_PUBLIC_KEY = "Ds00L6omMeRPrS-JhQByoVnBSdM";
   // コピー対象のboxnoteテンプレートのファイルID
-  const BOX_TARGET_FILE_ID = "526904357462";
+  const BOX_TARGET_FILE_ID = "495739122193";
   // GaroonのプロキシAPIの設定
   const GAROON_PROXY_API_CONF = {
     copyNote: {
@@ -166,6 +166,10 @@ jQuery.noConflict();
     $("#create-note-button").show();
   };
 
+  const clearSharedLinkOfSchedule = () => {
+    setSharedLinkToSchedule("");
+  };
+
   /**
    * AdditinoalItemsから取得したbocの共有リンクをもとに、
    * 埋め込みiframeを作成、表示する関数
@@ -176,7 +180,12 @@ jQuery.noConflict();
     const embeddedUrl = `https://app.box.com/embed/s/${sharedLinkCode}?showParentPath=false`;
     const $linkNoteButton = $("#link-note-button");
     const $embeddedBoxNote = $("#embedded-box-note");
-    if ($linkNoteButton.length !== 1 || $embeddedBoxNote.length !== 1) {
+    const $disconnectNoteButton = $("#disconnect-note-button");
+    if (
+      $linkNoteButton.length !== 1 ||
+      $embeddedBoxNote.length !== 1 ||
+      $disconnectNoteButton.length !== 1
+    ) {
       alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
@@ -186,19 +195,21 @@ jQuery.noConflict();
     $linkNoteButton.show();
     $embeddedBoxNote[0].src = embeddedUrl;
     $embeddedBoxNote.show();
+    $disconnectNoteButton.click(clearSharedLinkOfSchedule);
+    $disconnectNoteButton.show();
   };
 
   garoon.events.on("schedule.event.detail.show", event => {
     const boxSharedUrl = event.event.additionalItems.item.value;
 
+    // 繰り返し予定時も引き継ぐ使用にしたためコメントアウト
     // 繰り返し予定の場合対象外として処理終了
-    if (event.event.eventType === "REPEATING") {
-      return;
-    }
+    // if (event.event.eventType === "REPEATING") {
+    //   return;
+    // }
 
     // 連携対象の予定メニューに表示されるhtml要素がなければ対象外として処理終了
     if ($("#box-content").length !== 1) {
-      alert(ERROR_MESSAGE.FAIL_GET_ELEMENTS);
       return;
     }
 
@@ -215,8 +226,9 @@ jQuery.noConflict();
   });
 
   // 再利用にAdditional Item(box url)が再利用されないようにする処理
-  garoon.events.on("schedule.event.create.show", event => {
-    event.event.additionalItems.item.value = "";
-    return event;
-  });
+  // 再利用時も引き継ぐ使用にしたためコメントアウト
+  // garoon.events.on("schedule.event.create.show", event => {
+  //   event.event.additionalItems.item.value = "";
+  //   return event;
+  // });
 })(jQuery);
